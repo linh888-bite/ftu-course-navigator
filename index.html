@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FTU Course Navigator – Foreign Trade University</title>
+  <!-- Load Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Load Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            ftu: {
+              red: '#A6192E',
+              dark: '#7A1222',
+              light: '#FDF2F4',
+              border: '#F5D0D6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      color: #1E293B;
+    }
+    /* Mobile preview frame container styling */
+    .mobile-frame-active {
+      max-width: 412px;
+      margin: 24px auto;
+      border: 12px solid #1E293B;
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.35);
+      background-color: #F8FAFC;
+      overflow-x: hidden;
+      min-height: 820px;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Utility Bar for Presentation Screenshot & Viewport Toggle -->
+  <div class="bg-slate-900 text-white text-xs py-2 px-4 flex flex-wrap items-center justify-between gap-2 border-b border-slate-800">
+    <div class="flex items-center gap-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+      <span class="font-medium text-slate-300">FTU Course Navigator – Official Prototype Preview (11 Validated FTU Courses & 13 Code Glossary Terms)</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="text-slate-400 hidden sm:inline">Preview Mode:</span>
+      <button id="btn-desktop-view" onclick="setViewportMode('desktop')" class="px-2.5 py-1 rounded bg-ftu-red text-white font-semibold transition">
+        💻 Desktop View
+      </button>
+      <button id="btn-mobile-view" onclick="setViewportMode('mobile')" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition">
+        📱 Mobile Phone Frame
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Application Wrapper (switches between full width and mobile phone frame) -->
+  <div id="app-viewport-wrapper" class="flex-1 flex flex-col transition-all duration-300">
+
+    <!-- Official FTU Top Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+          <!-- Brand Identity with Official FTU Circular Crest Logo -->
+          <div class="flex items-center justify-between">
+            <div class="cursor-pointer flex items-center gap-3.5" onclick="switchTab('home')">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shrink-0 shadow-md ring-2 ring-red-100 overflow-hidden bg-white">
+                <img src="Logo-DH-Ngoai-Thuong-FTU_2.png" alt="FTU Official Logo" class="w-full h-full object-contain hidden" onload="this.classList.remove('hidden'); this.nextElementSibling.classList.add('hidden');" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');" />
+                <svg viewBox="0 0 240 240" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-label="Foreign Trade University Official Logo">
+                  <defs>
+                    <path id="ftu-en-top-arc" d="M 31,120 A 89,89 0 1,1 209,120" />
+                    <path id="ftu-en-bottom-arc" d="M 27,132 A 94,94 0 0,0 213,132" />
+                  </defs>
+                  <circle cx="120" cy="120" r="118" fill="#B61E1E" />
+                  <circle cx="120" cy="120" r="113" fill="none" stroke="#FFFFFF" stroke-width="2.6" />
+                  <circle cx="120" cy="120" r="73" fill="none" stroke="#FFFFFF" stroke-width="2.4" />
+                  <circle cx="120" cy="120" r="68.5" fill="none" stroke="#FFFFFF" stroke-width="1.3" />
+                  <text fill="#FFFFFF" font-family="'Inter', 'Arial', sans-serif" font-size="15.2" font-weight="800" letter-spacing="0.7">
+                    <textPath href="#ftu-en-top-arc" startOffset="50%" text-anchor="middle">
+                      TRƯỜNG ĐẠI HỌC NGOẠI THƯƠNG
+                    </textPath>
+                  </text>
+                  <text fill="#FFFFFF" font-family="'Inter', 'Arial', sans-serif" font-size="14.2" font-weight="600" letter-spacing="0.9">
+                    <textPath href="#ftu-en-bottom-arc" startOffset="50%" text-anchor="middle">
+                      FOREIGN TRADE UNIVERSITY
+                    </textPath>
+                  </text>
+                  <path d="M 88,74 H 132 V 93 H 95 V 150 H 74 V 88 A 14,14 0 0,1 88,74 Z" fill="#FFFFFF" />
+                  <path d="M 99,117 H 118 V 146 H 146 V 117 H 165 V 148 A 18,18 0 0,1 147,166 H 117 A 18,18 0 0,1 99,148 Z" fill="#FFFFFF" />
+                  <path d="M 99,97 H 165 V 114 H 141.5 V 142 H 122.5 V 114 H 99 Z" fill="#FFFFFF" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-[11px] font-extrabold tracking-widest uppercase text-ftu-red leading-tight">
+                  FOREIGN TRADE UNIVERSITY
+                </div>
+                <div class="text-lg font-extrabold text-slate-900 leading-tight">
+                  FTU Course Navigator
+                </div>
+              </div>
+            </div>
+            <!-- Shortlist counter badge on mobile -->
+            <button onclick="openShortlistDrawer()" class="md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-ftu-light text-ftu-red border border-ftu-border text-xs font-bold">
+              <span>★ Saved</span>
+              <span id="saved-count-mobile" class="px-1.5 py-0.5 rounded-full bg-ftu-red text-white text-[10px]">1</span>
+            </button>
+          </div>
+
+          <!-- Navigation Tabs -->
+          <nav class="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0">
+            <button id="nav-home" onclick="switchTab('home')" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-ftu-red text-white whitespace-nowrap transition">
+              Home
+            </button>
+            <button id="nav-programs" onclick="switchTab('programs')" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">
+              Study Programs
+            </button>
+            <button id="nav-directory" onclick="switchTab('directory')" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">
+              Course Directory
+            </button>
+            <button id="nav-guide" onclick="switchTab('guide')" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">
+              Class Code Guide
+            </button>
+            <button id="nav-about" onclick="switchTab('about')" class="nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 whitespace-nowrap transition">
+              About Us
+            </button>
+            <button onclick="openShortlistDrawer()" class="hidden md:inline-flex items-center gap-1.5 ml-2 px-3.5 py-2 rounded-lg bg-ftu-light text-ftu-red border border-ftu-border text-xs sm:text-sm font-bold hover:bg-red-100 transition">
+              <span>★ My Shortlist</span>
+              <span id="saved-count-desktop" class="px-1.5 py-0.5 rounded-full bg-ftu-red text-white text-xs">1</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+
+      <!-- ================================================================= -->
+      <!-- TAB 1: HOMEPAGE                                                   -->
+      <!-- ================================================================= -->
+      <section id="tab-home" class="space-y-8">
+        <!-- Red FTU Hero Banner -->
+        <div class="relative rounded-2xl bg-gradient-to-br from-ftu-red via-[#8E1527] to-ftu-dark text-white p-6 sm:p-10 shadow-md overflow-hidden">
+          <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-bold tracking-wider uppercase text-red-100">
+              FOREIGN TRADE UNIVERSITY • HANOI CAMPUS
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              FTU Course Navigator
+            </h1>
+            <p class="text-sm sm:text-base text-red-100 leading-relaxed">
+              Official-source academic course explorer, syllabus repository, and class section code guide designed for Incoming International & Exchange Students.
+            </p>
+
+            <!-- Prominent Hero Search Bar -->
+            <div class="pt-2">
+              <div class="bg-white p-1.5 rounded-xl shadow-lg flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <div class="flex-1 flex items-center gap-2.5 px-3 py-2">
+                  <svg class="w-5 h-5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                  <input
+                    id="home-search-input"
+                    type="text"
+                    placeholder="Search by Course Code (e.g., KET317, QTRE402), Course Title, or Faculty..."
+                    class="w-full text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
+                    onkeydown="if(event.key==='Enter') triggerHomeSearch()"
+                  />
+                </div>
+                <button onclick="triggerHomeSearch()" class="px-5 py-2.5 rounded-lg bg-ftu-red hover:bg-ftu-dark text-white font-bold text-sm transition shrink-0">
+                  Search Courses
+                </button>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 mt-3 text-xs text-red-100">
+                <span class="font-semibold">Quick Try:</span>
+                <button onclick="quickSearch('QTRE402')" class="px-2 py-0.5 rounded bg-white/15 hover:bg-white/25 transition">QTRE402 (Organizational Behavior)</button>
+                <button onclick="quickSearch('KET317')" class="px-2 py-0.5 rounded bg-white/15 hover:bg-white/25 transition">KET317 (CSR Accounting)</button>
+                <button onclick="quickSearch('QTRE408')" class="px-2 py-0.5 rounded bg-white/15 hover:bg-white/25 transition">QTRE408 (Cross-Cultural Mgmt)</button>
+                <button onclick="quickSearch('Agile')" class="px-2 py-0.5 rounded bg-white/15 hover:bg-white/25 transition">QTRE444 (Agile Project Mgmt)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Essential Information for Incoming International Students -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-lg bg-ftu-light text-ftu-red flex items-center justify-center font-bold">i</span>
+              <div>
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-900">
+                  Essential Academic Information for International Exchange Students
+                </h2>
+                <p class="text-xs text-slate-500">Key rules to understand before selecting courses and registering your schedule at FTU</p>
+              </div>
+            </div>
+            <button onclick="switchTab('guide')" class="text-xs font-bold text-ftu-red hover:underline shrink-0">
+              Open Full Code Guide →
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red mb-1">
+                1. Course Code vs. Section Code
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>Course Code</strong> (e.g., <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">KET317</code> or <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">QTRE402</code>) identifies the academic subject. <strong>Section Code</strong> (e.g., <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">KET317.1</code>) identifies the specific semester class group & timetable slot.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red mb-1">
+                2. Credits & 'E'-Coded English Modules
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Standard FTU courses carry <strong>3.0 FTU Credits</strong> (approx. 45 classroom contact hours). Course codes with <strong>'E'</strong> in the 4th character (e.g., <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">QTRE402</code>, <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">QTRE408</code>) denote English-taught modules.
+              </p>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red mb-1">
+                3. Prerequisites & Learning Agreement
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                If an FTU course lists a prerequisite code (e.g., <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">KET314</code> for <code class="px-1 py-0.5 bg-white border rounded text-slate-800 font-bold">KET317</code>), exchange students who completed equivalent coursework at their home university may verify waiver eligibility with the International Office.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Study Programs (Prominent Cards) -->
+        <div class="space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Academic Departments</span>
+              <h2 class="text-xl font-extrabold text-slate-900">Browse by Study Program</h2>
+            </div>
+            <p class="text-xs text-slate-500">Select a department card below to view courses and syllabus details</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Study Program Card 1: Finance and Banking -->
+            <div onclick="openProgramView('Finance and Banking')" class="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-ftu-red shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between">
+              <div>
+                <div class="h-3 bg-ftu-red"></div>
+                <div class="p-6">
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="px-2.5 py-1 rounded-md bg-ftu-light text-ftu-red text-xs font-extrabold">
+                      PROGRAM CODE: FB-K62
+                    </span>
+                    <span class="text-xs font-semibold text-slate-500">8 Modules</span>
+                  </div>
+                  <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-ftu-red transition mb-2">
+                    Finance and Banking
+                  </h3>
+                  <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    Includes English-taught Management & Organization modules (QTRE402, QTRE408, QTRE444, QTRE409) and specialized Foreign Language modules in the K62 curriculum.
+                  </p>
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">QTRE402</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">QTRE408</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">QTRE444</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">QTRE409</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[11px]">+4 more</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-ftu-red">
+                <span>Explore Program Courses</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+
+            <!-- Study Program Card 2: Accounting and Auditing -->
+            <div onclick="openProgramView('Accounting and Auditing')" class="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-ftu-red shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between">
+              <div>
+                <div class="h-3 bg-slate-800 group-hover:bg-ftu-red transition"></div>
+                <div class="p-6">
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-slate-800 text-xs font-extrabold">
+                      PROGRAM CODE: AA-STD
+                    </span>
+                    <span class="text-xs font-semibold text-slate-500">3 Modules</span>
+                  </div>
+                  <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-ftu-red transition mb-2">
+                    Accounting and Auditing
+                  </h3>
+                  <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    Features Social Responsibility Accounting (KET317), Accounting Information Systems (KET308), and Academic & Business English 4 (EAB241 - Level B2).
+                  </p>
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">KET317</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">KET308</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">EAB241</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-ftu-red">
+                <span>Explore Program Courses</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+
+            <!-- Card 3: FTU Class Code & Registration Guide -->
+            <div onclick="switchTab('guide')" class="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-ftu-red shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between">
+              <div>
+                <div class="h-3 bg-amber-600 group-hover:bg-ftu-red transition"></div>
+                <div class="p-6">
+                  <div class="flex items-center justify-between gap-2 mb-3">
+                    <span class="px-2.5 py-1 rounded-md bg-amber-50 text-amber-800 text-xs font-extrabold">
+                      STUDENT HANDBOOK
+                    </span>
+                    <span class="text-xs font-semibold text-slate-500">13 Official Terms</span>
+                  </div>
+                  <h3 class="text-lg font-extrabold text-slate-900 group-hover:text-ftu-red transition mb-2">
+                    Class Code & Shift Decoder
+                  </h3>
+                  <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    Learn how to read FTU Course Codes vs. Class Section Codes, decode Shift 1–5 timetable hours, and locate classrooms across Buildings A, B, and D.
+                  </p>
+                  <div class="flex flex-wrap gap-1.5">
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">Shifts 1–5</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">Section Code</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-semibold">Room B302</span>
+                  </div>
+                </div>
+              </div>
+              <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-ftu-red">
+                <span>Open Class Code Guide</span>
+                <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured English-Taught Courses Preview on Homepage -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Featured Modules</span>
+              <h2 class="text-xl font-extrabold text-slate-900">Highlighted Courses for International Students</h2>
+            </div>
+            <button onclick="switchTab('directory')" class="text-xs sm:text-sm font-bold text-ftu-red hover:underline">
+              View All 11 Courses →
+            </button>
+          </div>
+          <div id="home-featured-courses" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 2: STUDY PROGRAMS (REQUIRED vs ELECTIVE vs UNCLASSIFIED)       -->
+      <!-- ================================================================= -->
+      <section id="tab-programs" class="hidden space-y-6">
+        <!-- Header & Department Switcher -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Department Curriculum View</div>
+              <h1 id="program-view-title" class="text-2xl font-extrabold text-slate-900 mt-0.5">Finance and Banking</h1>
+              <p id="program-view-subtitle" class="text-xs sm:text-sm text-slate-600 mt-1">
+                Official course modules published under the FTU Finance & Banking curriculum.
+              </p>
+            </div>
+            <!-- Department Selector Buttons -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="prog-btn-fb" onclick="openProgramView('Finance and Banking')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-ftu-red text-white transition">
+                Finance and Banking (8)
+              </button>
+              <button id="prog-btn-aa" onclick="openProgramView('Accounting and Auditing')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                Accounting and Auditing (3)
+              </button>
+            </div>
+          </div>
+
+          <!-- Academic Integrity Notice on Required vs Elective Classification -->
+          <div class="p-3.5 rounded-xl bg-amber-50/90 border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
+            <span class="font-extrabold text-amber-700 shrink-0 mt-0.5">📌 Curriculum Classification Policy:</span>
+            <span>
+              In strict compliance with FTU academic records, courses are categorized into <strong>Required Courses</strong> and <strong>Elective Courses</strong> only when explicitly confirmed by curriculum documentation. Modules whose individual syllabus pages do not state mandatory/elective status for incoming exchange students are transparently grouped under <strong>Verified Syllabus Modules (Confirm Required/Elective Status in Learning Agreement)</strong> without fabrication.
+            </span>
+          </div>
+
+          <!-- Sub-navigation filter for Required / Elective / Pending Verification -->
+          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-slate-100">
+            <span class="text-xs font-bold text-slate-500 mr-1">Show Category:</span>
+            <button id="req-filter-all" onclick="setProgramRequirementFilter('all')" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white">
+              All Program Modules
+            </button>
+            <button id="req-filter-required" onclick="setProgramRequirementFilter('Required')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">
+              📕 Required Courses
+            </button>
+            <button id="req-filter-elective" onclick="setProgramRequirementFilter('Elective')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">
+              📘 Elective Courses
+            </button>
+            <button id="req-filter-unverified" onclick="setProgramRequirementFilter('Pending')" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">
+              📋 Verified Syllabus (Pending Curriculum Type)
+            </button>
+          </div>
+        </div>
+
+        <!-- Program Courses Sections Container -->
+        <div id="program-courses-container" class="space-y-8"></div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 3: COURSE DIRECTORY (SEARCH & MULTI-CRITERIA FILTER)          -->
+      <!-- ================================================================= -->
+      <section id="tab-directory" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">HMW #3 Solution • Interactive Catalog</span>
+              <h1 class="text-2xl font-extrabold text-slate-900">FTU Course Directory & Multi-Filter</h1>
+            </div>
+            <button onclick="resetDirectoryFilters()" class="text-xs font-bold text-ftu-red hover:underline self-start sm:self-auto">
+              Reset All Filters
+            </button>
+          </div>
+
+          <!-- Search & Filter Controls -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            <!-- Keyword Search -->
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Search Code, Title, or Topic</label>
+              <input
+                id="dir-search-input"
+                type="text"
+                oninput="renderDirectoryCourses()"
+                placeholder="Type e.g. QTRE402, KET317, Agile, Accounting..."
+                class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-ftu-red"
+              />
+            </div>
+
+            <!-- Study Program / Faculty Filter -->
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Study Program / Faculty</label>
+              <select id="dir-filter-faculty" onchange="renderDirectoryCourses()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-ftu-red">
+                <option value="ALL">All Programs (11)</option>
+                <option value="Finance and Banking">Finance and Banking (8)</option>
+                <option value="Accounting and Auditing">Accounting and Auditing (3)</option>
+              </select>
+            </div>
+
+            <!-- Teaching Language Filter -->
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Teaching Language</label>
+              <select id="dir-filter-language" onchange="renderDirectoryCourses()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-ftu-red">
+                <option value="ALL">All Languages</option>
+                <option value="English">English (Confirmed)</option>
+                <option value="Not Specified">Check Semester Timetable</option>
+              </select>
+            </div>
+
+            <!-- Final Assessment Filter -->
+            <div>
+              <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Final Assessment Type</label>
+              <select id="dir-filter-assessment" onchange="renderDirectoryCourses()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-ftu-red">
+                <option value="ALL">All Assessment Types</option>
+                <option value="Written Exam">Written Exam</option>
+                <option value="Mixed Exam">Mixed Exam (Written / Report)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Active Results Count -->
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs text-slate-500">
+            <span id="dir-results-count" class="font-semibold text-slate-700">Showing all 11 validated courses</span>
+            <span>All displayed courses have 3.0 FTU Credits</span>
+          </div>
+        </div>
+
+        <!-- Course Cards Grid -->
+        <div id="directory-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+      </section>
+
+      <!-- ================================================================= -->
+      <!-- TAB 4: CLASS CODE GUIDE & ACADEMIC GLOSSARY (HMW #2 SOLUTION)     -->
+      <!-- ================================================================= -->
+      <section id="tab-guide" class="hidden space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">HMW #2 Solution • Academic Code Decoder</span>
+          <h1 class="text-2xl font-extrabold text-slate-900">How to Read FTU Course Codes, Class Sections & Timetable Shifts</h1>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            New international students frequently confuse permanent <strong>Course Codes</strong> with semester-specific <strong>Class Section Codes</strong>. Use the visual structure guide and official 13-term glossary below when registering your courses.
+          </p>
+
+          <!-- Visual Code Anatomy Diagram -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div class="p-4 rounded-xl bg-ftu-light border border-ftu-border">
+              <div class="text-[11px] font-extrabold uppercase text-ftu-red">A. Subject Course Code</div>
+              <div class="text-2xl font-extrabold text-slate-900 mt-1">QTRE402 / KET317</div>
+              <p class="text-xs text-slate-700 mt-2 leading-relaxed">
+                • <strong>First 3 letters</strong> (<code class="font-bold">QTR</code>, <code class="font-bold">KET</code>): Academic department.<br/>
+                • <strong>4th letter 'E'</strong> (<code class="font-bold">QTRE</code>): Taught in <strong>English</strong>.<br/>
+                • <strong>3 digits</strong> (<code class="font-bold">402</code>, <code class="font-bold">317</code>): Course level & number.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
+              <div class="text-[11px] font-extrabold uppercase text-slate-700">B. Class Section Code</div>
+              <div class="text-2xl font-extrabold text-slate-900 mt-1">KET317.1</div>
+              <p class="text-xs text-slate-700 mt-2 leading-relaxed">
+                • Appears in the semester registration timetable.<br/>
+                • Identifies a <strong>specific class group, lecturer, day, shift, and room</strong> opened in a given semester.<br/>
+                • One Course Code can have multiple Section Codes (.1, .2, .3).
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-slate-100 border border-slate-200">
+              <div class="text-[11px] font-extrabold uppercase text-slate-700">C. Daily Class Shifts & Rooms</div>
+              <div class="text-2xl font-extrabold text-slate-900 mt-1">Shift 2 • B302</div>
+              <p class="text-xs text-slate-700 mt-2 leading-relaxed">
+                • <strong>Shift 1:</strong> 07:00 – 09:25 | <strong>Shift 2:</strong> 09:35 – 12:00<br/>
+                • <strong>Shift 3:</strong> 12:30 – 14:55 | <strong>Shift 4:</strong> 15:05 – 17:30<br/>
+                • <strong>Room B302:</strong> Building B, 3rd Floor, Room 302.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Searchable Glossary List (13 Verified Terms from Code_Glossary tab) -->
+        <div class="space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h2 class="text-lg font-extrabold text-slate-900">Official FTU Academic & Registration Glossary (13 Terms)</h2>
+            <input
+              id="glossary-search"
+              type="text"
+              oninput="renderGlossary()"
+              placeholder="Filter glossary terms (e.g. Shift, Prerequisite, Room)..."
+              class="w-full sm:w-72 px-3.5 py-2 rounded-xl border border-slate-300 text-xs bg-white focus:outline-none focus:border-ftu-red"
+            />
+          </div>
+          <div id="glossary-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+      </section>
+
+
+      <!-- ================================================================= -->
+      <!-- TAB 5: ABOUT US (OFFICIAL FTU & INTERNATIONAL OFFICE OVERVIEW)    -->
+      <!-- ================================================================= -->
+      <section id="tab-about" class="hidden space-y-6">
+        <!-- Hero Banner for About Us -->
+        <div class="relative rounded-2xl bg-gradient-to-br from-ftu-red via-[#8E1527] to-ftu-dark text-white p-6 sm:p-10 shadow-md overflow-hidden">
+          <div class="relative z-10 max-w-3xl space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-bold tracking-wider uppercase text-red-100">
+              FOREIGN TRADE UNIVERSITY • INTERNATIONAL OFFICE (PHÒNG HỢP TÁC QUỐC TẾ)
+            </div>
+            <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
+              Welcome to Foreign Trade University!
+            </h1>
+            <p class="text-sm sm:text-base text-red-100 leading-relaxed">
+              Established in 1960 in Hanoi, Vietnam, Foreign Trade University (FTU) is a prestigious public university and one of the top institutions in Vietnam for economics, business, finance, management, and international integration.
+            </p>
+          </div>
+        </div>
+
+        <!-- Key Highlights Stats Strip -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Established</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">1960</div>
+            <p class="text-xs text-slate-500 mt-1">Over 65 years of excellence in higher education</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Student Body</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">20,000+</div>
+            <p class="text-xs text-slate-500 mt-1">Including hundreds of international students globally</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">National Presence</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">3 Campuses</div>
+            <p class="text-xs text-slate-500 mt-1">Hanoi Headquarters, Ho Chi Minh City & Quang Ninh</p>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+            <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Global Mobility</div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">English Tracks</div>
+            <p class="text-xs text-slate-500 mt-1">Undergraduate & graduate credit-bearing programs</p>
+          </div>
+        </div>
+
+        <!-- Main Overview & International Students Information -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Left 2 Columns: Detailed Narrative -->
+          <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">University Profile</span>
+              <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">About Foreign Trade University (FTU)</h2>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                <strong>Foreign Trade University (FTU)</strong> is one of the top universities in Vietnam. Established in 1960, FTU has gained enormous achievement in providing talented and high-quality human resources to the economy and thus made great contribution to the industrialization, modernization, and global economic integration of Vietnam. The annual admissions test to the university is among the most competitive in Vietnam, and students from FTU are widely recognized as being active, dynamic, and well-qualified.
+              </p>
+              <p>
+                FTU offers a wide range of majors in <strong>economics, business, business administration, finance and banking, law, accounting – auditing, marketing, and business foreign languages</strong>. The University currently hosts <strong>20,000 students</strong>, of which hundreds of international students come from the USA, Europe, Australia, and Asia, who learn to lead and serve not only through a strong academic curriculum but also by participating in various extracurricular activities, from athletics to community service.
+              </p>
+              <p>
+                FTU scatters along the S-shape of Vietnam with <strong>3 campuses</strong> including <strong>Hanoi – main campus, Ho Chi Minh City campus, and Quang Ninh campus</strong>. Located at the heart of Hanoi, the political and historical capital city of Vietnam, the main campus offers the conveniences of an urban center with shops, restaurants, and leisure activities to cater to any taste. Hanoi is also close to many internationally recognized sightseeing destinations including Ha Long Bay, where the third campus is nearby located. Ho Chi Minh City campus carries in itself a different taste of Vietnam as it is the center of commerce, finance, culture, and tourism in the South and Mekong Delta—the combination of neo-classical and international lifestyle. The Oriental cultural diversity and lifestyle of the people offer valuable opportunities for international students to discover.
+              </p>
+            </div>
+
+            <div class="p-5 rounded-xl bg-ftu-light border border-ftu-border space-y-2">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">
+                Research Excellence & International Cooperation
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                FTU is committed to research, discovery, creativity, and vigorous intellectual exchange. The diversification of excellence across all disciplinary areas is considered a priority, aiming for international recognition with strong linkages with the government and business sectors.
+              </p>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Promoting international cooperation, especially through <strong>exchange programs</strong>, has always been recognized as an important measure for the development of FTU in an increasingly globalized environment. Towards FTU's long-term development strategy and 2030 vision, the university prioritizes establishing a global network with partner universities and organizations worldwide, providing <strong>programs taught in English</strong> for both undergraduates and graduates to attend courses and earn transferable academic credits.
+              </p>
+            </div>
+          </div>
+
+          <!-- Right Column: Academic & Campus Highlights -->
+          <div class="space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-4">
+              <div>
+                <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Academic Fields</span>
+                <h3 class="text-base font-extrabold text-slate-900 mt-0.5">Core Disciplines at FTU</h3>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">Economics</span>
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">International Business</span>
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">Business Administration</span>
+                <span class="px-3 py-1.5 rounded-lg bg-ftu-light text-ftu-red border border-ftu-border text-xs font-bold">Finance & Banking</span>
+                <span class="px-3 py-1.5 rounded-lg bg-ftu-light text-ftu-red border border-ftu-border text-xs font-bold">Accounting & Auditing</span>
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">Marketing</span>
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">Law</span>
+                <span class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-800 text-xs font-semibold">Business Foreign Languages</span>
+              </div>
+              <div class="pt-3 border-t border-slate-100">
+                <button onclick="switchTab('directory')" class="w-full py-2.5 px-4 rounded-xl bg-ftu-red hover:bg-ftu-dark text-white font-bold text-xs transition">
+                  Explore Validated FTU Courses →
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-3">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">About This Platform</div>
+              <h3 class="text-base font-extrabold text-slate-900">FTU Course Navigator</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Designed specifically for incoming international and exchange students to browse verified English-taught syllabi, check prerequisite rules, and decode FTU class section codes before submitting their Learning Agreement.
+              </p>
+              <div class="pt-2 flex flex-wrap gap-2">
+                <button onclick="switchTab('programs')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+                  Study Programs
+                </button>
+                <button onclick="switchTab('guide')" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+                  Class Code Guide
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Official Campuses & Contact Directory -->
+        <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-slate-100 pb-4">
+            <div>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Campus Network & Contact Directory</span>
+              <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Our Three Campuses Across Vietnam</h2>
+            </div>
+            <span class="text-xs text-slate-500">Official International Office & Campus Contact Information</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <!-- Hanoi Headquarters -->
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-ftu-red text-white text-[11px] font-extrabold uppercase tracking-wide">
+                  Main Campus • Headquarters
+                </span>
+                <h3 class="text-base font-extrabold text-slate-900">
+                  Foreign Trade University Headquarters
+                </h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Located in the heart of Hanoi, the political and historical capital city of Vietnam, close to Ha Long Bay and major cultural landmarks.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-200/80 space-y-1.5 text-xs text-slate-700">
+                <div><strong class="text-slate-900">Address:</strong> 91 Chua Lang Street, Lang Ward, Hanoi City</div>
+                <div><strong class="text-slate-900">Telephone:</strong> (84-24) 3259 5158</div>
+                <div><strong class="text-slate-900">Email:</strong> <a href="mailto:qhqt@ftu.edu.vn" class="text-ftu-red font-bold hover:underline">qhqt@ftu.edu.vn</a></div>
+              </div>
+            </div>
+
+            <!-- Ho Chi Minh City Branch -->
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-slate-800 text-white text-[11px] font-extrabold uppercase tracking-wide">
+                  Southern Campus
+                </span>
+                <h3 class="text-base font-extrabold text-slate-900">
+                  FTU – Ho Chi Minh City Branch
+                </h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Situated in the vibrant hub of commerce, finance, culture, and tourism in Southern Vietnam and the Mekong Delta region.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-200/80 space-y-1.5 text-xs text-slate-700">
+                <div><strong class="text-slate-900">Address:</strong> 15, D5 Street, Thanh My Tay Ward, Ho Chi Minh City</div>
+                <div><strong class="text-slate-900">Telephone:</strong> (84-28) 3512 7254 | <strong class="text-slate-900">Fax:</strong> (84-28) 3512 7255</div>
+                <div><strong class="text-slate-900">Email:</strong> <a href="mailto:qlkhhtqt.cs2@ftu.edu.vn" class="text-ftu-red font-bold hover:underline">qlkhhtqt.cs2@ftu.edu.vn</a></div>
+              </div>
+            </div>
+
+            <!-- Quang Ninh Campus -->
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-5 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <span class="inline-block px-2.5 py-1 rounded-md bg-slate-700 text-white text-[11px] font-extrabold uppercase tracking-wide">
+                  Northeast Coastal Campus
+                </span>
+                <h3 class="text-base font-extrabold text-slate-900">
+                  FTU – Quang Ninh Campus
+                </h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Located in Quang Ninh Province near the world-famous UNESCO World Heritage site Ha Long Bay.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-200/80 space-y-1.5 text-xs text-slate-700">
+                <div><strong class="text-slate-900">Address:</strong> 260, Bach Dang Street, Vang Danh Ward, Quang Ninh Province</div>
+                <div><strong class="text-slate-900">Telephone:</strong> (84-20) 3356 7089</div>
+                <div><strong class="text-slate-900">Email:</strong> <a href="mailto:csquangninh@ftu.edu.vn" class="text-ftu-red font-bold hover:underline">csquangninh@ftu.edu.vn</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================================================================= -->
+    <!-- MINIMALIST FOOTER (CLEAN, SCANNABLE & EASY TO MAINTAIN)           -->
+    <!-- ================================================================= -->
+    <footer id="site-footer" class="bg-white border-t-4 border-ftu-red mt-12 text-slate-600">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-6 border-b border-slate-200">
+
+          <!-- 1. Brand & Official Syllabus Sources (4 cols) -->
+          <div class="lg:col-span-4 space-y-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-xs ring-2 ring-red-100 overflow-hidden bg-white">
+                <svg viewBox="0 0 240 240" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-label="Foreign Trade University Logo">
+                  <circle cx="120" cy="120" r="118" fill="#A6192E" />
+                  <circle cx="120" cy="120" r="112" fill="none" stroke="#FFFFFF" stroke-width="3" />
+                  <circle cx="120" cy="120" r="72" fill="none" stroke="#FFFFFF" stroke-width="2.5" />
+                  <path d="M 88,74 H 132 V 93 H 95 V 150 H 74 V 88 A 14,14 0 0,1 88,74 Z" fill="#FFFFFF" />
+                  <path d="M 99,117 H 118 V 146 H 146 V 117 H 165 V 148 A 18,18 0 0,1 147,166 H 117 A 18,18 0 0,1 99,148 Z" fill="#FFFFFF" />
+                  <path d="M 99,97 H 165 V 114 H 141.5 V 142 H 122.5 V 114 H 99 Z" fill="#FFFFFF" />
+                </svg>
+              </div>
+              <div>
+                <div class="text-[10px] font-extrabold tracking-widest uppercase text-ftu-red leading-tight">
+                  FOREIGN TRADE UNIVERSITY
+                </div>
+                <div class="text-base font-extrabold text-slate-900 leading-tight">
+                  FTU Course Navigator
+                </div>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Academic course explorer and class code guide for incoming international &amp; exchange students at FTU.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-500">
+              <span class="font-bold text-slate-700">Syllabus Sources:</span>
+              <a href="https://eqldt.ftu.edu.vn" target="_blank" rel="noopener noreferrer" class="text-ftu-red font-semibold hover:underline">eqldt.ftu.edu.vn ↗</a>
+              <a href="https://qldt1.ftu.edu.vn" target="_blank" rel="noopener noreferrer" class="text-ftu-red font-semibold hover:underline">qldt1.ftu.edu.vn ↗</a>
+            </div>
+          </div>
+
+          <!-- 2. Quick Links (2 cols) -->
+          <div class="lg:col-span-2 space-y-2.5">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">
+              Quick Links
+            </h3>
+            <ul class="space-y-1.5 text-xs font-semibold text-slate-600">
+              <li><button onclick="switchTab('home')" class="hover:text-ftu-red transition">Home</button></li>
+              <li><button onclick="switchTab('programs')" class="hover:text-ftu-red transition">Study Programs</button></li>
+              <li><button onclick="switchTab('directory')" class="hover:text-ftu-red transition">Course Directory</button></li>
+              <li><button onclick="switchTab('guide')" class="hover:text-ftu-red transition">Class Code Guide</button></li>
+              <li><button onclick="switchTab('about')" class="hover:text-ftu-red transition">About Us</button></li>
+              <li class="pt-1">
+                <button onclick="openShortlistDrawer()" class="text-ftu-red font-bold hover:underline">★ My Shortlist</button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 3. Student Handbook & FTU Compass YouTube Channel Link (3 cols) -->
+          <div class="lg:col-span-3 space-y-2.5">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">
+              Exchange Guides
+            </h3>
+
+            <!-- Simple Direct Link to FTU Compass YouTube Channel (Configured via FTU_COMPASS_YOUTUBE_URL) -->
+            <a
+              id="footer-youtube-link"
+              href="https://www.youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group p-3 rounded-xl bg-slate-50 hover:bg-ftu-light border border-slate-200 hover:border-ftu-border flex items-center gap-3 transition"
+            >
+              <div class="w-9 h-9 rounded-lg bg-ftu-red text-white flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="text-xs font-extrabold text-slate-900 group-hover:text-ftu-red transition truncate">
+                  FTU Compass YouTube ↗
+                </div>
+                <div class="text-[11px] text-slate-500 truncate">
+                  Exchange Life &amp; Study Guide
+                </div>
+              </div>
+            </a>
+
+            <!-- Simple Direct Link / QR for International Student Handbook -->
+            <a
+              id="footer-handbook-link"
+              href="#site-footer"
+              class="group p-3 rounded-xl bg-slate-50 hover:bg-ftu-light border border-slate-200 hover:border-ftu-border flex items-center gap-3 transition"
+            >
+              <div id="footer-handbook-qr-box" class="w-9 h-9 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-ftu-red font-extrabold text-xs shrink-0 overflow-hidden">
+                📘
+              </div>
+              <div class="min-w-0 flex-1">
+                <div id="footer-handbook-title" class="text-xs font-extrabold text-slate-900 group-hover:text-ftu-red transition truncate">
+                  Student Handbook
+                </div>
+                <div id="footer-handbook-status" class="text-[11px] text-slate-500 truncate">
+                  Official Guide (Link / QR)
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- 4. Verified International Office Contact (3 cols) -->
+          <div class="lg:col-span-3 space-y-2.5">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">
+              International Office
+            </h3>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 text-xs text-slate-600">
+              <div class="font-bold text-slate-900">Hanoi Headquarters</div>
+              <div>91 Chua Lang St., Dong Da, Hanoi</div>
+              <div>Tel: (84-24) 3259 5158</div>
+              <div>
+                Email: <a href="mailto:qhqt@ftu.edu.vn" class="text-ftu-red font-bold hover:underline">qhqt@ftu.edu.vn</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Minimal Copyright Bar -->
+        <div class="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-ftu-red"></span>
+            <span class="text-slate-600 font-semibold">© 2026 FTU Course Navigator</span>
+            <span>• Student-developed academic navigation prototype.</span>
+          </div>
+          <div>
+            Always confirm final course registration on FTUGate.
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- COURSE DETAILS MODAL (AUTO-HIDES EMPTY FIELDS CLEANLY)              -->
+  <!-- =================================================================== -->
+  <div id="course-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <!-- Modal Top Header -->
+      <div class="bg-gradient-to-r from-ftu-red to-ftu-dark text-white p-5 sm:p-6 flex items-start justify-between gap-4">
+        <div class="space-y-1.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <span id="modal-course-code" class="px-2.5 py-0.5 rounded bg-white text-ftu-red font-extrabold text-xs tracking-wide">KET317</span>
+            <span id="modal-course-faculty" class="px-2.5 py-0.5 rounded bg-white/15 text-white text-xs font-semibold">Accounting and Auditing</span>
+            <span id="modal-course-req" class="px-2.5 py-0.5 rounded bg-amber-400/20 border border-amber-300/40 text-amber-100 text-[11px] font-semibold"></span>
+          </div>
+          <h2 id="modal-course-title" class="text-xl sm:text-2xl font-extrabold leading-snug">
+            Social Responsibility Accounting
+          </h2>
+        </div>
+        <button onclick="closeCourseModal()" class="w-8 h-8 rounded-lg bg-white/15 hover:bg-white/25 flex items-center justify-center text-white font-bold text-lg shrink-0">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Scrollable Content -->
+      <div class="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1">
+        <!-- Key Metadata Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="text-[10px] font-bold uppercase text-slate-400">Credits</div>
+            <div id="modal-credits" class="text-sm font-extrabold text-slate-900 mt-0.5">3.0 FTU Credits</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="text-[10px] font-bold uppercase text-slate-400">Teaching Language</div>
+            <div id="modal-language" class="text-sm font-extrabold text-slate-900 mt-0.5">English</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="text-[10px] font-bold uppercase text-slate-400">Prerequisite Code</div>
+            <div id="modal-prereq-code" class="text-sm font-extrabold text-ftu-red mt-0.5">KET314</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="text-[10px] font-bold uppercase text-slate-400">Final Assessment</div>
+            <div id="modal-final-type" class="text-sm font-extrabold text-slate-900 mt-0.5">Written Exam</div>
+          </div>
+        </div>
+
+        <!-- Course Description -->
+        <div id="block-description" class="space-y-1.5">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Course Overview & Description</h3>
+          <p id="modal-description" class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-200/80"></p>
+        </div>
+
+        <!-- Course Objectives -->
+        <div id="block-objectives" class="space-y-1.5">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Official Course Objectives</h3>
+          <p id="modal-objectives" class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-white p-4 rounded-xl border border-slate-200"></p>
+        </div>
+
+        <!-- Key Topics / Chapters -->
+        <div id="block-topics" class="space-y-2">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Key Topics & Syllabus Breakdown</h3>
+          <ul id="modal-topics-list" class="space-y-1.5 bg-white p-4 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-700"></ul>
+        </div>
+
+        <!-- Course Learning Outcomes (CLOs) - Automatically hidden if empty in source -->
+        <div id="block-outcomes" class="space-y-2">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Course Learning Outcomes (CLOs)</h3>
+          <div id="modal-outcomes" class="bg-white p-4 rounded-xl border border-slate-200 text-xs sm:text-sm text-slate-700 space-y-1.5"></div>
+        </div>
+
+        <!-- Prerequisite Guidance -->
+        <div id="block-prereq-note" class="space-y-1.5">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Prerequisite & Registration Guidance</h3>
+          <p id="modal-prereq-note" class="text-xs sm:text-sm text-slate-700 bg-amber-50/70 border border-amber-200 p-3.5 rounded-xl"></p>
+        </div>
+
+        <!-- Assessment Weighting Breakdown -->
+        <div id="block-assessment" class="space-y-1.5">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider text-ftu-red">Assessment Structure & Weighting</h3>
+          <div id="modal-assessment" class="text-xs sm:text-sm font-semibold text-slate-800 bg-slate-50 p-3.5 rounded-xl border border-slate-200"></div>
+        </div>
+
+        <!-- Linked Semester Class Sections (Distinguishing Course Code vs Section Code) -->
+        <div class="space-y-2 pt-2 border-t border-slate-200">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-900">
+              📅 Linked Class Sections (Section Code vs. Course Code)
+            </h3>
+            <span class="text-[11px] text-slate-500">Semester 1 (2026–2027)</span>
+          </div>
+          <div id="modal-sections-list" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Modal Footer Actions -->
+      <div class="px-5 py-4 bg-slate-50 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3">
+        <button id="modal-save-btn" onclick="toggleSaveCurrentCourse()" class="px-4 py-2.5 rounded-xl border border-ftu-red text-ftu-red hover:bg-ftu-light font-bold text-xs sm:text-sm transition">
+          ★ Save to My Shortlist
+        </button>
+        <div class="flex items-center gap-2">
+          <a id="modal-syllabus-link" href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl bg-ftu-red hover:bg-ftu-dark text-white font-bold text-xs sm:text-sm transition inline-flex items-center gap-1.5">
+            <span>View Official FTU Syllabus Webpage</span>
+            <span>↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- SAVED COURSES SHORTLIST DRAWER                                      -->
+  <!-- =================================================================== -->
+  <div id="shortlist-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-xs flex items-center justify-end">
+    <div class="bg-white w-full max-w-md h-full flex flex-col shadow-2xl">
+      <div class="p-5 bg-slate-900 text-white flex items-center justify-between">
+        <div>
+          <div class="text-[11px] font-bold uppercase tracking-wider text-red-300">Personal Course Planner</div>
+          <h3 class="text-lg font-extrabold">★ My Saved Courses Shortlist</h3>
+        </div>
+        <button onclick="closeShortlistDrawer()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center">✕</button>
+      </div>
+      <div id="shortlist-items-container" class="p-5 flex-1 overflow-y-auto space-y-3"></div>
+      <div class="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500">
+        Tip: Compare credit load, prerequisites, and final exam formats before submitting your Learning Agreement.
+      </div>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- APPLICATION DATA & INTERACTIVE LOGIC (EXACT VALIDATED DATASET)      -->
+  <!-- =================================================================== -->
+  <script>
+    // ===================================================================
+    // 1. QUICK CONFIGURATION (EDIT LINKS IN ONE PLACE HERE)
+    // ===================================================================
+    const SITE_CONFIG = {
+      // Change your FTU Compass YouTube channel link here (1 single place):
+      FTU_COMPASS_YOUTUBE_URL: 'https://www.youtube.com/@FTUCompass',
+
+      // Optional: Direct link & QR image for International Student Handbook:
+      STUDENT_HANDBOOK_URL: '',
+      STUDENT_HANDBOOK_QR_IMAGE: '',
+
+      // Connected Google Sheets Published CSV URL (kept active and intact):
+      GOOGLE_SHEETS_CSV_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSbczGKvoquDVttq0YmzHp-40_C88xyVJCKdZzF4RX_qMPbPegtfofPB7Qu9gZnyjgPbzAoNHkICI8c/pub?gid=1399190889&single=true&output=csv'
+    };
+
+    // Apply Quick Config & Optional Google Sheets overrides to Footer links
+    function applySiteConfigToFooter() {
+      const ytEl = document.getElementById('footer-youtube-link');
+      if (ytEl && SITE_CONFIG.FTU_COMPASS_YOUTUBE_URL) {
+        ytEl.href = SITE_CONFIG.FTU_COMPASS_YOUTUBE_URL;
+      }
+
+      const hbEl = document.getElementById('footer-handbook-link');
+      const hbStatusEl = document.getElementById('footer-handbook-status');
+      const hbQrBox = document.getElementById('footer-handbook-qr-box');
+
+      if (hbEl) {
+        if (SITE_CONFIG.STUDENT_HANDBOOK_URL) {
+          hbEl.href = SITE_CONFIG.STUDENT_HANDBOOK_URL;
+          hbEl.target = '_blank';
+          hbEl.rel = 'noopener noreferrer';
+          if (hbStatusEl) hbStatusEl.textContent = 'Open Official Handbook ↗';
+        } else {
+          hbEl.removeAttribute('target');
+          hbEl.href = '#site-footer';
+          if (hbStatusEl) hbStatusEl.textContent = 'Official Guide (Pending Link)';
+        }
+      }
+
+      if (hbQrBox && SITE_CONFIG.STUDENT_HANDBOOK_QR_IMAGE) {
+        hbQrBox.innerHTML = `<img src="${SITE_CONFIG.STUDENT_HANDBOOK_QR_IMAGE}" alt="Handbook QR" class="w-full h-full object-contain" />`;
+      }
+    }
+
+    // Lightweight background sync with Google Sheets CSV (Preserves Google Sheets connection)
+    function syncConfigFromGoogleSheets() {
+      const csvUrl = (SITE_CONFIG.GOOGLE_SHEETS_CSV_URL || '').trim();
+      if (!csvUrl) return;
+
+      const pubMatch = csvUrl.match(/\/spreadsheets\/d\/e\/([a-zA-Z0-9-_]+)/);
+      const stdMatch = csvUrl.match(/\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/);
+      const gidMatch = csvUrl.match(/[?&]gid=([0-9]+)/);
+      const gid = gidMatch ? gidMatch[1] : '0';
+      if (!pubMatch && !stdMatch) return;
+
+      const cbName = 'ftuSheetSync_' + Date.now();
+      const baseGvizUrl = pubMatch
+        ? `https://docs.google.com/spreadsheets/d/e/${pubMatch[1]}/gviz/tq`
+        : `https://docs.google.com/spreadsheets/d/${stdMatch[1]}/gviz/tq`;
+
+      const scriptEl = document.createElement('script');
+      window[cbName] = function(response) {
+        if (scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+        delete window[cbName];
+        if (!response || !response.table || !response.table.rows) return;
+
+        response.table.rows.forEach(r => {
+          const cells = (r.c || []).map(c => (c && c.v !== null && c.v !== undefined) ? String(c.v).trim() : '');
+          const sec = (cells[0] || '').toUpperCase();
+          const url = cells[4] || '';
+          const qr = cells[5] || '';
+          if (sec.includes('YOUTUBE') && url) {
+            SITE_CONFIG.FTU_COMPASS_YOUTUBE_URL = url;
+          } else if (sec.includes('HANDBOOK')) {
+            if (url) SITE_CONFIG.STUDENT_HANDBOOK_URL = url;
+            if (qr) SITE_CONFIG.STUDENT_HANDBOOK_QR_IMAGE = qr;
+          }
+        });
+        applySiteConfigToFooter();
+      };
+      scriptEl.src = `${baseGvizUrl}?gid=${gid}&headers=0&tqx=out:json;responseHandler:${cbName}`;
+      scriptEl.async = true;
+      scriptEl.onerror = function() {
+        if (scriptEl.parentNode) scriptEl.parentNode.removeChild(scriptEl);
+      };
+      document.head.appendChild(scriptEl);
+    }
+
+    // 11 Validated Courses from the group's FTU_Course_Navigator_(1_BS) database
+    // (C010 Graduation Thesis Extraction Failed row is excluded from student view)
+    const COURSES_DATA = [
+      {
+        id: 'C001',
+        code: 'KET317',
+        title: 'Social Responsibility Accounting',
+        faculty: 'Accounting and Auditing',
+        category: 'Accounting & Auditing',
+        credits: 3,
+        language: 'Not Specified',
+        languageBadge: 'Confirm by Class Section',
+        prereqCode: 'KET314',
+        prereqNote: 'Official prerequisite: Advanced Management Accounting (KET314). Exchange students with equivalent prior coursework should confirm waiver eligibility with the FTU International Office.',
+        description: 'An upper-level accounting course focusing on how organizations measure, record, and disclose social and environmental impacts alongside financial performance to support sustainable corporate governance.',
+        objectives: 'Equip students with techniques for collecting, measuring, calculating and reporting social responsibility accounting information for planning and operational control, and for informing managers and stakeholders about corporate social responsibility performance.',
+        topics: [
+          '1. Overview of corporate social responsibility accounting',
+          '2. Social responsibility accounting methods',
+          '3. Sustainability reporting',
+          '4. Social responsibility budgeting',
+          '5. Social responsibility accounting in business decision-making'
+        ],
+        outcomes: [
+          'CLO1: Understand conceptual frameworks of CSR accounting',
+          'CLO2: Apply measurement and calculation techniques for social and environmental costs/benefits',
+          'CLO3: Prepare and analyze sustainability and social responsibility reports for managerial decision-making'
+        ],
+        assessmentSummary: 'Attendance & Participation: 10% | Short test: 15% | Group assignment: 15% | Final examination: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified Syllabus (Confirm Required/Elective in Curriculum)',
+        syllabusUrl: 'https://eqldt.ftu.edu.vn/accounting-and-auditing-ket317-_-social-responsibility-accounting/',
+        featured: true
+      },
+      {
+        id: 'C002',
+        code: 'QTRE402',
+        title: 'Organizational Behavior',
+        faculty: 'Finance and Banking',
+        category: 'Business & Management',
+        credits: 3,
+        language: 'English',
+        languageBadge: 'English (E-Coded Module)',
+        prereqCode: 'None',
+        prereqNote: 'No prior FTU course code is required in the published syllabus. Suitable for international exchange students.',
+        description: 'Examines the nature and dynamics of individual, group, and organizational behavior affecting performance, equipping students with management strategies across people, structure, technology, and external environment.',
+        objectives: 'This course is concerned with helping managers to better understand the nature and dynamics of social behaviour related to organizational performance and to develop strategies that may help one become more effective in an organization. Key elements to consider are people, structure, technology, and the external environment.',
+        topics: [
+          '1. Course Introduction & Introduction to Organizational Behaviour',
+          '2. Individual in Organization: Personality & Values',
+          '3. Individual in Organization: Perception & Learning',
+          '4. Workplace Emotions, Attitudes and Stress',
+          '5. Motivation in the Workplace: Theory and Practice',
+          '6. Individual Decision Making in Organizations',
+          '7. Team Dynamics: Working in Groups and Teams, Communication, Conflict & Negotiation',
+          '8. Power, Politics and Leadership in Organizations',
+          '9. Organization: Structure, Culture and Change'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance & Participation: 10% | Mid-term Assessments (Quiz / Case Report / Group Presentation): 30% (2 x 15%) | Final Exam (MCQ + writing (90 mins)) [or Group Written Report & Presentation]: 60%',
+        finalType: 'Mixed Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Confirm Required/Elective in Learning Agreement)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3128-qtre402-organizational-behavior.html',
+        featured: true
+      },
+      {
+        id: 'C003',
+        code: 'QTRE408',
+        title: 'Cross Cultural Management',
+        faculty: 'Finance and Banking',
+        category: 'Business & Management',
+        credits: 3,
+        language: 'English',
+        languageBadge: 'English (E-Coded Module)',
+        prereqCode: 'None',
+        prereqNote: 'No prior FTU course code is required in the published syllabus. Highly recommended for international exchange students.',
+        description: 'Provides fundamental knowledge of international cultures and how culture impacts multinational corporations, cross-cultural communication, negotiation, leadership, and international human resource management.',
+        objectives: 'After finishing this course, the students should have fundamental knowledge of international cultures and how culture impacts a company, especially a multinational corporation (MNC). In addition, they should acquire the ability to apply this knowledge into reality and succeed in working in an international context.',
+        topics: [
+          'Chapter 1: Global Realities and Management Challenges',
+          'Chapter 2: Culture Environment',
+          'Chapter 3: Organizational Environment',
+          'Chapter 4: Cross-Cultural Communication and Negotiation',
+          'Chapter 5: Ethics and Behaviors Across Cultures',
+          'Chapter 6: Leading Global Organizations',
+          'Chapter 7: Motivating Across Cultures & Working with Multicultural Teams',
+          'Chapter 8: Human Resources Selection and Development Across Cultures'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance & Participation: 10% | Mid-term Assessments (Quiz / Case Report / Group Presentation): 30% (2 x 15%) | Final Exam (MCQ + writing (90 mins)) [or Group Written Report & Presentation]: 60%',
+        finalType: 'Mixed Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Confirm Required/Elective in Learning Agreement)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3127-qtre408-cross-cultural-management.html',
+        featured: true
+      },
+      {
+        id: 'C004',
+        code: 'QTRE444',
+        title: 'Agile Project Management',
+        faculty: 'Finance and Banking',
+        category: 'Business & Management',
+        credits: 3,
+        language: 'English',
+        languageBadge: 'English (E-Coded Module)',
+        prereqCode: 'None',
+        prereqNote: 'No prior FTU course code is required in the published syllabus.',
+        description: 'Equips students with modern Agile project management frameworks (Scrum, Kanban, XP), adaptive planning, iterative execution, and team leadership skills for dynamic business environments.',
+        objectives: 'CO1: Understand the history, value, and principles of Agile Project Management (APM); CO2: Compare Traditional vs. Agile Project Management; CO3: Apply popular Agile frameworks including Scrum, Kanban, and XP; CO4: Practice Agile Leadership and Team Management; CO5: Implement Agile project planning, execution, and tracking.',
+        topics: [
+          'Chapter 1: Agile Project Management Overview',
+          'Chapter 2: Popular Agile Frameworks (Scrum, Kanban, XP)',
+          'Chapter 3: Leadership and Team Management in APM',
+          'Chapter 4: Agile Project Planning',
+          'Chapter 5: Agile Project Execution',
+          'Chapter 6: Agility Management in Project Management',
+          'Chapter 7: Success in Agile Project Management'
+        ],
+        outcomes: [
+          'CO1–CO5: Master Agile values, Scrum/Kanban frameworks, adaptive sprint planning, and self-organizing project team leadership.'
+        ],
+        assessmentSummary: 'Class Attendance & Participation: 10% | Mid-term Test & Agile Group Project: 30% | Final Examination: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Confirm Required/Elective in Learning Agreement)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3129-qtre444-agile-project-management.html',
+        featured: true
+      },
+      {
+        id: 'C007',
+        code: 'QTRE409',
+        title: 'Productivity and Quality Management',
+        faculty: 'Finance and Banking',
+        category: 'Business & Management',
+        credits: 3,
+        language: 'English',
+        languageBadge: 'English (E-Coded Module)',
+        prereqCode: 'None',
+        prereqNote: 'No prior FTU course code is required in the published syllabus.',
+        description: 'Provides foundational knowledge and analytical tools in organizational quality management and productivity improvement across manufacturing and service enterprises.',
+        objectives: 'Provide students with basic knowledge of quality and productivity management in organizations, enabling them to apply Total Quality Management (TQM) and continuous improvement tools in practice.',
+        topics: [
+          '1. Fundamentals of Quality and Productivity Management',
+          '2. Total Quality Management (TQM) & Quality Standards (ISO)',
+          '3. Statistical Process Control & Quality Tools',
+          '4. Lean Operations & Continuous Productivity Improvement'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance: 10% | Mid-term Assessment / Group Assignment: 30% | Final Examination: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Confirm Required/Elective in Learning Agreement)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3130-qtre409-productivity-and-quality-management.html',
+        featured: true
+      },
+      {
+        id: 'C008',
+        code: 'KET308',
+        title: 'Accounting Information Systems',
+        faculty: 'Accounting and Auditing',
+        category: 'Accounting & Auditing',
+        credits: 3,
+        language: 'Not Specified',
+        languageBadge: 'Confirm by Class Section',
+        prereqCode: 'None',
+        prereqNote: 'No prior FTU course code required in the published web syllabus.',
+        description: 'Covers the design, control, and operation of accounting information systems, business transaction cycles, relational databases, and internal control frameworks in modern enterprises.',
+        objectives: 'Equip students with systematic knowledge of Accounting Information Systems (AIS), transaction processing cycles, data modeling, and internal control procedures.',
+        topics: [
+          '1. Overview of Accounting Information Systems & Business Processes',
+          '2. System Documentation Techniques (DFDs, Flowcharts, BPMN)',
+          '3. Revenue, Expenditure, and General Ledger Cycles',
+          '4. Internal Control & AIS Security Frameworks'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance: 10% | Mid-term Test: 30% | Final Examination: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified Syllabus (Confirm Required/Elective in Curriculum)',
+        syllabusUrl: 'https://eqldt.ftu.edu.vn/accounting-and-auditing-ket308-_-accounting-information-systems/',
+        featured: true
+      },
+      {
+        id: 'C009',
+        code: 'EAB241',
+        title: 'Academic and Business English 4',
+        faculty: 'Accounting and Auditing',
+        category: 'Languages & Academic Skills',
+        credits: 3,
+        language: 'English',
+        languageBadge: 'English (Language Module)',
+        prereqCode: 'None',
+        prereqNote: 'Upper-intermediate business & academic English proficiency module (CEFR Level B2 target).',
+        description: 'Develops advanced academic writing, business communication, and analytical reading skills in English at the upper-intermediate (CEFR B2) level.',
+        objectives: 'This course aims to equip students with integrated linguistic and communicative competencies in academic and business English at the upper-intermediate level (B2).',
+        topics: [
+          '1. Academic Essay Structure & Argumentative Writing',
+          '2. Business Correspondence & Professional Reports',
+          '3. Critical Reading & Data Commentary',
+          '4. Academic Presentation & Seminar Discussion Skills'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Participation: 10% | Mid-term Skills Assessment: 30% | Final Examination: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified Syllabus (Confirm Required/Elective in Curriculum)',
+        syllabusUrl: 'https://eqldt.ftu.edu.vn/accounting-and-auditing-eab241-_-academic-and-business-english-4/',
+        featured: false
+      },
+      {
+        id: 'C005',
+        code: 'TNHH309',
+        title: 'Japanese Business Culture (Văn Hóa Kinh Doanh Nhật Bản)',
+        faculty: 'Finance and Banking',
+        category: 'Languages & Academic Skills',
+        credits: 3,
+        language: 'Not Specified',
+        languageBadge: 'Japanese / Vietnamese Track',
+        prereqCode: 'None',
+        prereqNote: 'Specialized module for students in the Japanese Business language track.',
+        description: 'Explores corporate culture, business etiquette (Keigo, Meishi, Horenso), organizational hierarchy, and management practices in Japanese enterprises.',
+        objectives: 'Provide students with comprehensive knowledge of Japanese business culture, corporate communication norms, and management philosophy.',
+        topics: [
+          '1. Historical Foundations of Japanese Corporate Culture',
+          '2. Japanese Business Etiquette & Communication Norms',
+          '3. Decision-Making (Ringi) and Organizational Structure in Japan'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance: 10% | Mid-term Assessment: 30% | Final Examination: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Specialized Language Track)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3087-tnhh309-văn-hóa-kinh-doanh-nhật-bản.html',
+        featured: false
+      },
+      {
+        id: 'C006',
+        code: 'TNHH311',
+        title: 'Economic & Commercial Translation (Biên Dịch Kinh Tế Thương Mại)',
+        faculty: 'Finance and Banking',
+        category: 'Languages & Academic Skills',
+        credits: 3,
+        language: 'Not Specified',
+        languageBadge: 'Japanese / Vietnamese Track',
+        prereqCode: 'None',
+        prereqNote: 'Specialized translation module in the K62 curriculum.',
+        description: 'Trains students in translating economic news, trade contracts, and financial reports between Japanese and Vietnamese.',
+        objectives: 'Develop accurate translation terminology and syntactic analysis skills across economic, financial, and international trade documents.',
+        topics: [
+          '1. Economic & Macroeconomic News Translation',
+          '2. International Trade & Commercial Correspondence Translation',
+          '3. Financial & Corporate Report Translation'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance: 10% | Mid-term Translation Test: 30% | Final Written Exam: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Specialized Language Track)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3088-tnhh311-biên-dịch-kinh-tế-thương-mại.html',
+        featured: false
+      },
+      {
+        id: 'C011',
+        code: 'TNHH203',
+        title: 'Intermediate Business Japanese 2 (Tiếng Nhật Thương Mại Trung Cấp 2)',
+        faculty: 'Finance and Banking',
+        category: 'Languages & Academic Skills',
+        credits: 3,
+        language: 'Not Specified',
+        languageBadge: 'Japanese Track',
+        prereqCode: 'None',
+        prereqNote: 'Requires prior foundational Japanese proficiency.',
+        description: 'Strengthens intermediate-level Japanese reading, listening, grammar, and workplace vocabulary in commercial contexts.',
+        objectives: 'Develop intermediate business Japanese proficiency across listening, speaking, reading, and writing for professional settings.',
+        topics: [
+          '1. Intermediate Business Grammar & Honorifics (Keigo)',
+          '2. Workplace Reading Comprehension & Business Emails'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance: 10% | Mid-term Test: 30% | Final Exam: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Specialized Language Track)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3089-tnhh203-tiếng-nhật-thương-mại-trung-cấp-2.html',
+        featured: false
+      },
+      {
+        id: 'C012',
+        code: 'TNHH208',
+        title: 'Business Japanese Conversation (Nói Thương Mại)',
+        faculty: 'Finance and Banking',
+        category: 'Languages & Academic Skills',
+        credits: 3,
+        language: 'Not Specified',
+        languageBadge: 'Japanese Track',
+        prereqCode: 'None',
+        prereqNote: 'Specialized spoken Japanese communication module.',
+        description: 'Focuses on practical spoken communication, client reception, telephone etiquette, and business negotiation in Japanese.',
+        objectives: 'Equip students with oral communication skills and situational role-play fluency in Japanese business environments.',
+        topics: [
+          '1. Business Introductions, Telephone Etiquette & Appointments',
+          '2. Product Presentations, Client Meetings & Apology/Request Expressions'
+        ],
+        outcomes: [],
+        assessmentSummary: 'Attendance: 10% | Mid-term Speaking Test: 30% | Final Exam: 60%',
+        finalType: 'Written Exam',
+        requirementType: 'Pending',
+        requirementLabel: 'Verified K62 Syllabus (Specialized Language Track)',
+        syllabusUrl: 'https://qldt1.ftu.edu.vn/thông-tin-đào-tạo/chương-trình-đào-tạo/ngành-tài-chính-ngân-hàng/ngành-tài-chính-ngân-hàng-áp-dụng-từ-k62-trở-đi/293-62ptdt/3090-tnhh208-nói-thương-mại.html',
+        featured: false
+      }
+    ];
+
+    // Validated Class Sections from Class_Sections sheet
+    const CLASS_SECTIONS_DATA = {
+      'C001': [
+        {
+          sectionId: 'S001',
+          sectionCode: 'KET317.1 (Illustrative)',
+          semester: 'Semester 1 (2026–2027)',
+          language: 'English',
+          dayShift: 'Tuesday - Shift 2 (09:35 – 12:00)',
+          room: 'B302 – Building B (Illustrative)',
+          note: 'Illustrative class section for UX testing – verify official semester timetable on FTUGate.'
+        }
+      ],
+      'C002': [
+        {
+          sectionId: 'S002',
+          sectionCode: 'QTRE402 (Section TBA)',
+          semester: 'Semester 1 (2026–2027)',
+          language: 'English',
+          dayShift: 'Schedule Published in Semester Timetable',
+          room: 'TBA',
+          note: 'Linked to QTRE402. Specific day/shift and room are assigned in the semester timetable.'
+        }
+      ],
+      'C003': [
+        {
+          sectionId: 'S003',
+          sectionCode: 'QTRE408 (Section TBA)',
+          semester: 'Semester 1 (2026–2027)',
+          language: 'English',
+          dayShift: 'Schedule Published in Semester Timetable',
+          room: 'TBA',
+          note: 'Linked to QTRE408. Specific day/shift and room are assigned in the semester timetable.'
+        }
+      ],
+      'C004': [
+        {
+          sectionId: 'S004',
+          sectionCode: 'QTRE444 (Section TBA)',
+          semester: 'Semester 1 (2026–2027)',
+          language: 'English',
+          dayShift: 'Schedule Published in Semester Timetable',
+          room: 'TBA',
+          note: 'Linked to QTRE444. Specific day/shift and room are assigned in the semester timetable.'
+        }
+      ]
+    };
+
+    // 13 Verified Glossary Terms from Code_Glossary sheet
+    const GLOSSARY_DATA = [
+      {
+        id: 'T001',
+        term: 'Course Code',
+        type: 'Academic Identifier',
+        fullName: 'Official Course Code',
+        explanation: 'Identifies the academic subject in the FTU curriculum. It stays the same across different classes and semesters.',
+        example: 'KET317 (Social Responsibility Accounting), QTRE402 (Organizational Behavior)',
+        misunderstanding: 'Students often confuse the Course Code with the Class Section Code used for registration.'
+      },
+      {
+        id: 'T002',
+        term: 'Section Code',
+        type: 'Registration Identifier',
+        fullName: 'Class Section Code',
+        explanation: 'Identifies a specific class opening in a given semester, including its schedule, lecturer, and room.',
+        example: 'KET317.1 (Illustrative format)',
+        misunderstanding: 'Different sections of the same course have the same syllabus content but different class times.'
+      },
+      {
+        id: 'T003',
+        term: 'Prerequisite',
+        type: 'Academic Requirement',
+        fullName: 'Prerequisite Course',
+        explanation: 'A course or foundational knowledge that students should complete before enrolling in a more advanced course.',
+        example: 'KET314 before KET317',
+        misunderstanding: 'Exchange students may already satisfy this through an equivalent course at their home university.'
+      },
+      {
+        id: 'T004',
+        term: 'Credits',
+        type: 'Academic Workload',
+        fullName: 'FTU Academic Credits',
+        explanation: 'Indicates the academic weight and study workload of a course at FTU.',
+        example: '3 Credits (Standard 45 contact hours)',
+        misunderstanding: 'FTU credits may need conversion to ECTS or home-university credits via your Learning Agreement.'
+      },
+      {
+        id: 'T005',
+        term: 'CLO',
+        type: 'Syllabus Term',
+        fullName: 'Course Learning Outcomes',
+        explanation: 'Describes the knowledge, skills, and autonomy students are expected to achieve after completing the course.',
+        example: 'CLO1, CLO2, CLO3',
+        misunderstanding: 'Learning outcomes describe expected competencies, not the weekly lecture schedule.'
+      },
+      {
+        id: 'T006',
+        term: 'Shift 1',
+        type: 'Timetable Slot',
+        fullName: 'Morning Shift 1',
+        explanation: 'First morning class session of the day at FTU.',
+        example: '07:00 – 09:25 (Illustrative)',
+        misunderstanding: 'Check exact start/end times on the official semester timetable.'
+      },
+      {
+        id: 'T007',
+        term: 'Shift 2',
+        type: 'Timetable Slot',
+        fullName: 'Morning Shift 2',
+        explanation: 'Second morning class session of the day at FTU.',
+        example: '09:35 – 12:00 (Illustrative)',
+        misunderstanding: 'Two courses in the same day and shift will create a direct schedule conflict.'
+      },
+      {
+        id: 'T008',
+        term: 'Shift 3',
+        type: 'Timetable Slot',
+        fullName: 'Afternoon Shift 3',
+        explanation: 'First afternoon class session of the day at FTU.',
+        example: '12:30 – 14:55 (Illustrative)',
+        misunderstanding: 'Verify afternoon session timing for your specific campus building.'
+      },
+      {
+        id: 'T009',
+        term: 'Shift 4',
+        type: 'Timetable Slot',
+        fullName: 'Afternoon Shift 4',
+        explanation: 'Second afternoon class session of the day at FTU.',
+        example: '15:05 – 17:30 (Illustrative)',
+        misunderstanding: 'Ensure no overlap with language or seminar sessions.'
+      },
+      {
+        id: 'T010',
+        term: 'Room Code (A / B / D)',
+        type: 'Campus Location',
+        fullName: 'Building & Classroom Code',
+        explanation: 'The letter indicates the campus building, the first digit indicates the floor, and the last two digits indicate the room number.',
+        example: 'B302 = Building B, 3rd Floor, Room 302',
+        misunderstanding: 'Do not confuse Building A, Building B, and Building D on the Hanoi campus (91 Chua Lang).'
+      },
+      {
+        id: 'T011',
+        term: 'CLC / High-Quality Program',
+        type: 'Program Type',
+        fullName: 'High-Quality English-Taught Program',
+        explanation: 'Undergraduate tracks at FTU where specialized courses are delivered in English (often marked with "E" in the course code).',
+        example: 'QTRE402, QTRE408, QTRE444',
+        misunderstanding: 'Confirm with the International Office which sections are open to exchange students each semester.'
+      },
+      {
+        id: 'T012',
+        term: 'Time_Slot_Tag',
+        type: 'Schedule Check Key',
+        fullName: 'Day & Shift Combination Tag',
+        explanation: 'Combines the day of the week and the class shift to help students detect timetable clashes immediately.',
+        example: 'Tuesday - Shift 2',
+        misunderstanding: 'If two shortlisted class sections share the same Time_Slot_Tag, they cannot be taken together.'
+      },
+      {
+        id: 'T013',
+        term: 'Data_Verification',
+        type: 'Data Transparency',
+        fullName: 'Source Verification Status',
+        explanation: 'Indicates whether information comes directly from an official FTU syllabus page or requires semester timetable confirmation.',
+        example: 'Verified / Partially Verified',
+        misunderstanding: 'Always verify final exam dates and room assignments on FTUGate.'
+      }
+    ];
+
+    // State variables
+    let currentProgram = 'Finance and Banking';
+    let currentProgramReqFilter = 'all';
+    let savedCourseIds = new Set(['C001']);
+    let activeModalCourseId = null;
+
+    // Initialize Application
+    window.addEventListener('DOMContentLoaded', () => {
+      renderHomeFeaturedCourses();
+      renderProgramCourses();
+      renderDirectoryCourses();
+      renderGlossary();
+      updateSavedBadgeCount();
+      applySiteConfigToFooter();
+      syncConfigFromGoogleSheets();
+    });
+
+    // Switch between Desktop View and Mobile Phone Frame Preview
+    function setViewportMode(mode) {
+      const wrapper = document.getElementById('app-viewport-wrapper');
+      const btnDesktop = document.getElementById('btn-desktop-view');
+      const btnMobile = document.getElementById('btn-mobile-view');
+
+      if (mode === 'mobile') {
+        wrapper.classList.add('mobile-frame-active');
+        btnMobile.className = 'px-2.5 py-1 rounded bg-ftu-red text-white font-semibold transition';
+        btnDesktop.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition';
+      } else {
+        wrapper.classList.remove('mobile-frame-active');
+        btnDesktop.className = 'px-2.5 py-1 rounded bg-ftu-red text-white font-semibold transition';
+        btnMobile.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 font-medium transition';
+      }
+    }
+
+    // Navigation Tab Switcher
+    function switchTab(tabName) {
+      const tabs = ['home', 'programs', 'directory', 'guide', 'about'];
+      tabs.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        const navBtn = document.getElementById('nav-' + t);
+        if (t === tabName) {
+          el.classList.remove('hidden');
+          navBtn.className = 'nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-ftu-red text-white whitespace-nowrap transition';
+        } else {
+          el.classList.add('hidden');
+          navBtn.className = 'nav-btn px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-100 whitespace-nowrap transition';
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Reusable Course Card HTML Builder
+    function createCourseCardHtml(course) {
+      const isSaved = savedCourseIds.has(course.id);
+      const isEnglish = course.language === 'English';
+
+      return `
+        <div onclick="openCourseModal('${course.id}')" class="group cursor-pointer bg-white rounded-2xl border border-slate-200 hover:border-ftu-red p-5 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-2.5 py-1 rounded-md bg-ftu-red text-white text-xs font-extrabold tracking-wide">
+                ${course.code}
+              </span>
+              <div class="flex items-center gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[11px] font-bold ${isEnglish ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 text-slate-600'}">
+                  ${course.languageBadge}
+                </span>
+                <button
+                  onclick="event.stopPropagation(); toggleSaveCourse('${course.id}')"
+                  title="Save to Shortlist"
+                  class="w-7 h-7 rounded-lg border flex items-center justify-center text-sm transition ${isSaved ? 'bg-ftu-light border-ftu-red text-ftu-red' : 'border-slate-200 text-slate-400 hover:text-ftu-red'}"
+                >
+                  ★
+                </button>
+              </div>
+            </div>
+
+            <h3 class="text-base font-extrabold text-slate-900 group-hover:text-ftu-red transition leading-snug mb-1.5">
+              ${course.title}
+            </h3>
+            <div class="text-xs font-semibold text-slate-500 mb-3">
+              ${course.faculty} • <span class="text-slate-700">${course.credits}.0 Credits</span>
+            </div>
+
+            <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed mb-4">
+              ${course.description}
+            </p>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+            <div class="text-slate-500">
+              Prereq: <span class="font-bold text-slate-800">${course.prereqCode}</span> • Final: <span class="font-bold text-slate-800">${course.finalType}</span>
+            </div>
+            <span class="font-bold text-ftu-red group-hover:translate-x-0.5 transition-transform">Details →</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Render Featured Courses on Homepage
+    function renderHomeFeaturedCourses() {
+      const container = document.getElementById('home-featured-courses');
+      const featured = COURSES_DATA.filter(c => c.featured);
+      container.innerHTML = featured.map(createCourseCardHtml).join('');
+    }
+
+    // Trigger Search from Homepage Hero
+    function triggerHomeSearch() {
+      const q = document.getElementById('home-search-input').value.trim();
+      document.getElementById('dir-search-input').value = q;
+      switchTab('directory');
+      renderDirectoryCourses();
+    }
+
+    function quickSearch(term) {
+      document.getElementById('dir-search-input').value = term;
+      switchTab('directory');
+      renderDirectoryCourses();
+    }
+
+    // Open Study Program View (Tab 2)
+    function openProgramView(programName) {
+      currentProgram = programName;
+      currentProgramReqFilter = 'all';
+      switchTab('programs');
+      updateProgramButtonsUI();
+      renderProgramCourses();
+    }
+
+    function setProgramRequirementFilter(filterType) {
+      currentProgramReqFilter = filterType;
+      updateProgramButtonsUI();
+      renderProgramCourses();
+    }
+
+    function updateProgramButtonsUI() {
+      const btnFb = document.getElementById('prog-btn-fb');
+      const btnAa = document.getElementById('prog-btn-aa');
+
+      if (currentProgram === 'Finance and Banking') {
+        btnFb.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-ftu-red text-white transition';
+        btnAa.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+        document.getElementById('program-view-title').textContent = 'Finance and Banking';
+        document.getElementById('program-view-subtitle').textContent = 'Courses published under the FTU Finance & Banking curriculum (K62 Program).';
+      } else {
+        btnAa.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-ftu-red text-white transition';
+        btnFb.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+        document.getElementById('program-view-title').textContent = 'Accounting and Auditing';
+        document.getElementById('program-view-subtitle').textContent = 'Courses published under the FTU Accounting & Auditing department.';
+      }
+
+      const filterIds = {
+        'all': 'req-filter-all',
+        'Required': 'req-filter-required',
+        'Elective': 'req-filter-elective',
+        'Pending': 'req-filter-unverified'
+      };
+      Object.keys(filterIds).forEach(k => {
+        const el = document.getElementById(filterIds[k]);
+        if (k === currentProgramReqFilter) {
+          el.className = 'px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-900 text-white transition';
+        } else {
+          el.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition';
+        }
+      });
+    }
+
+    // Render Study Program Courses with Honest Required / Elective / Pending Classification
+    function renderProgramCourses() {
+      const container = document.getElementById('program-courses-container');
+      const programCourses = COURSES_DATA.filter(c => c.faculty === currentProgram);
+
+      const requiredList = programCourses.filter(c => c.requirementType === 'Required');
+      const electiveList = programCourses.filter(c => c.requirementType === 'Elective');
+      const pendingList = programCourses.filter(c => c.requirementType === 'Pending');
+
+      let html = '';
+
+      // Section 1: Required Courses
+      if (currentProgramReqFilter === 'all' || currentProgramReqFilter === 'Required') {
+        html += `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                <span>📕 Required Courses</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-xs">${requiredList.length}</span>
+              </h2>
+            </div>
+            ${requiredList.length > 0
+              ? `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${requiredList.map(createCourseCardHtml).join('')}</div>`
+              : `<div class="p-5 rounded-2xl bg-white border border-slate-200 text-xs text-slate-600">
+                  No courses in the current dataset have been marked as mandatory Required Courses without curriculum table verification. All verified syllabus modules for <strong>${currentProgram}</strong> are listed in the verified section below so exchange students can match them with their Home University Learning Agreement.
+                </div>`
+            }
+          </div>
+        `;
+      }
+
+      // Section 2: Elective Courses
+      if (currentProgramReqFilter === 'all' || currentProgramReqFilter === 'Elective') {
+        html += `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                <span>📘 Elective Courses</span>
+                <span class="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-xs">${electiveList.length}</span>
+              </h2>
+            </div>
+            ${electiveList.length > 0
+              ? `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">${electiveList.map(createCourseCardHtml).join('')}</div>`
+              : `<div class="p-5 rounded-2xl bg-white border border-slate-200 text-xs text-slate-600">
+                  Individual FTU syllabus pages do not specify mandatory vs. elective status per exchange cohort. See the <strong>${pendingList.length} Verified Department Modules</strong> below available for exchange course selection.
+                </div>`
+            }
+          </div>
+        `;
+      }
+
+      // Section 3: Verified Syllabus Modules (Pending Official Required/Elective Tag)
+      if (currentProgramReqFilter === 'all' || currentProgramReqFilter === 'Pending') {
+        html += `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <div>
+                <h2 class="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                  <span>📋 Verified Department Modules (Exchange Selection Pool)</span>
+                  <span class="px-2 py-0.5 rounded-full bg-ftu-red text-white text-xs">${pendingList.length}</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5">Official FTU syllabus verified; required/elective classification depends on student's specific cohort and Learning Agreement.</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${pendingList.map(createCourseCardHtml).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+    }
+
+    // Render Directory Courses with Multi-Criteria Filters (Tab 3)
+    function renderDirectoryCourses() {
+      const query = (document.getElementById('dir-search-input').value || '').trim().toLowerCase();
+      const facultyFilter = document.getElementById('dir-filter-faculty').value;
+      const langFilter = document.getElementById('dir-filter-language').value;
+      const assessFilter = document.getElementById('dir-filter-assessment').value;
+
+      const filtered = COURSES_DATA.filter(c => {
+        const matchesQuery = !query ||
+          c.code.toLowerCase().includes(query) ||
+          c.title.toLowerCase().includes(query) ||
+          c.faculty.toLowerCase().includes(query) ||
+          c.description.toLowerCase().includes(query) ||
+          c.topics.join(' ').toLowerCase().includes(query);
+
+        const matchesFaculty = (facultyFilter === 'ALL') || (c.faculty === facultyFilter);
+        const matchesLang = (langFilter === 'ALL') || (c.language === langFilter);
+        const matchesAssess = (assessFilter === 'ALL') || (c.finalType === assessFilter);
+
+        return matchesQuery && matchesFaculty && matchesLang && matchesAssess;
+      });
+
+      const countEl = document.getElementById('dir-results-count');
+      countEl.textContent = `Showing ${filtered.length} of ${COURSES_DATA.length} validated FTU courses`;
+
+      const grid = document.getElementById('directory-courses-grid');
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-3">
+            <div class="text-base font-extrabold text-slate-800">No matching courses found</div>
+            <p class="text-xs text-slate-500">Try clearing your search keyword or switching the Teaching Language / Study Program filter.</p>
+            <button onclick="resetDirectoryFilters()" class="px-4 py-2 rounded-xl bg-ftu-red text-white text-xs font-bold">Reset Filters</button>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = filtered.map(createCourseCardHtml).join('');
+      }
+    }
+
+    function resetDirectoryFilters() {
+      document.getElementById('dir-search-input').value = '';
+      document.getElementById('dir-filter-faculty').value = 'ALL';
+      document.getElementById('dir-filter-language').value = 'ALL';
+      document.getElementById('dir-filter-assessment').value = 'ALL';
+      renderDirectoryCourses();
+    }
+
+    // Open Course Details Modal (Auto-hides empty fields cleanly)
+    function openCourseModal(courseId) {
+      const course = COURSES_DATA.find(c => c.id === courseId);
+      if (!course) return;
+      activeModalCourseId = courseId;
+
+      document.getElementById('modal-course-code').textContent = course.code;
+      document.getElementById('modal-course-faculty').textContent = course.faculty;
+      document.getElementById('modal-course-req').textContent = course.requirementLabel;
+      document.getElementById('modal-course-title').textContent = course.title;
+
+      document.getElementById('modal-credits').textContent = course.credits + '.0 FTU Credits';
+      document.getElementById('modal-language').textContent = course.languageBadge;
+      document.getElementById('modal-prereq-code').textContent = course.prereqCode;
+      document.getElementById('modal-final-type').textContent = course.finalType;
+
+      // Description
+      document.getElementById('modal-description').textContent = course.description;
+
+      // Objectives
+      const blockObj = document.getElementById('block-objectives');
+      if (course.objectives) {
+        blockObj.classList.remove('hidden');
+        document.getElementById('modal-objectives').textContent = course.objectives;
+      } else {
+        blockObj.classList.add('hidden');
+      }
+
+      // Key Topics
+      const blockTopics = document.getElementById('block-topics');
+      const topicsList = document.getElementById('modal-topics-list');
+      if (course.topics && course.topics.length > 0) {
+        blockTopics.classList.remove('hidden');
+        topicsList.innerHTML = course.topics.map(t => `<li class="flex items-start gap-2"><span class="text-ftu-red font-bold">•</span><span>${t}</span></li>`).join('');
+      } else {
+        blockTopics.classList.add('hidden');
+      }
+
+      // Learning Outcomes (Auto-hide when empty in official source!)
+      const blockOut = document.getElementById('block-outcomes');
+      const outContainer = document.getElementById('modal-outcomes');
+      if (course.outcomes && course.outcomes.length > 0) {
+        blockOut.classList.remove('hidden');
+        outContainer.innerHTML = course.outcomes.map(o => `<div class="flex items-start gap-2"><span class="text-emerald-600 font-bold">✓</span><span>${o}</span></div>`).join('');
+      } else {
+        blockOut.classList.add('hidden');
+      }
+
+      // Prerequisite Note
+      document.getElementById('modal-prereq-note').textContent = course.prereqNote;
+
+      // Assessment Summary
+      document.getElementById('modal-assessment').textContent = course.assessmentSummary;
+
+      // Linked Class Sections
+      const sectionsContainer = document.getElementById('modal-sections-list');
+      const sections = CLASS_SECTIONS_DATA[course.id] || [
+        {
+          sectionCode: course.code + ' (Section TBA)',
+          semester: 'Semester 1 (2026–2027)',
+          language: course.languageBadge,
+          dayShift: 'Check Official Semester Timetable',
+          room: 'TBA',
+          note: 'Official syllabus verified. Specific class section code and room are assigned in the semester timetable.'
+        }
+      ];
+
+      sectionsContainer.innerHTML = sections.map(s => `
+        <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+          <div class="space-y-0.5">
+            <div class="font-extrabold text-slate-900">
+              Section Code: <span class="text-ftu-red">${s.sectionCode}</span>
+              <span class="ml-2 px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-semibold">${s.semester}</span>
+            </div>
+            <div class="text-slate-600">
+              Time Slot: <strong>${s.dayShift}</strong> • Room: <strong>${s.room}</strong>
+            </div>
+            <div class="text-[11px] text-slate-400">${s.note}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Syllabus URL
+      document.getElementById('modal-syllabus-link').href = course.syllabusUrl;
+
+      updateModalSaveButton();
+      document.getElementById('course-modal').classList.remove('hidden');
+    }
+
+    function closeCourseModal() {
+      document.getElementById('course-modal').classList.add('hidden');
+      activeModalCourseId = null;
+    }
+
+    // Shortlist Bookmark Logic
+    function toggleSaveCourse(courseId) {
+      if (savedCourseIds.has(courseId)) {
+        savedCourseIds.delete(courseId);
+      } else {
+        savedCourseIds.add(courseId);
+      }
+      updateSavedBadgeCount();
+      renderHomeFeaturedCourses();
+      renderProgramCourses();
+      renderDirectoryCourses();
+      if (activeModalCourseId === courseId) updateModalSaveButton();
+    }
+
+    function toggleSaveCurrentCourse() {
+      if (!activeModalCourseId) return;
+      toggleSaveCourse(activeModalCourseId);
+    }
+
+    function updateModalSaveButton() {
+      const btn = document.getElementById('modal-save-btn');
+      if (savedCourseIds.has(activeModalCourseId)) {
+        btn.className = 'px-4 py-2.5 rounded-xl bg-ftu-light border border-ftu-red text-ftu-red font-bold text-xs sm:text-sm transition';
+        btn.textContent = '★ Saved in My Shortlist (Click to Remove)';
+      } else {
+        btn.className = 'px-4 py-2.5 rounded-xl border border-ftu-red text-ftu-red hover:bg-ftu-light font-bold text-xs sm:text-sm transition';
+        btn.textContent = '☆ Save to My Shortlist';
+      }
+    }
+
+    function updateSavedBadgeCount() {
+      const c = savedCourseIds.size;
+      document.getElementById('saved-count-desktop').textContent = c;
+      document.getElementById('saved-count-mobile').textContent = c;
+    }
+
+    function openShortlistDrawer() {
+      const container = document.getElementById('shortlist-items-container');
+      const savedList = COURSES_DATA.filter(c => savedCourseIds.has(c.id));
+
+      if (savedList.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center text-xs text-slate-500 border border-dashed border-slate-300 rounded-xl">
+            You haven't saved any courses yet. Click the ★ icon on any course card to build your shortlist.
+          </div>
+        `;
+      } else {
+        container.innerHTML = savedList.map(c => `
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <span class="px-2 py-0.5 rounded bg-ftu-red text-white text-xs font-extrabold">${c.code}</span>
+              <button onclick="toggleSaveCourse('${c.id}'); openShortlistDrawer();" class="text-xs text-slate-400 hover:text-red-600 font-semibold">Remove</button>
+            </div>
+            <div onclick="closeShortlistDrawer(); openCourseModal('${c.id}')" class="font-extrabold text-sm text-slate-900 hover:text-ftu-red cursor-pointer">
+              ${c.title}
+            </div>
+            <div class="text-xs text-slate-600">
+              ${c.faculty} • ${c.credits}.0 Credits • Lang: <strong>${c.languageBadge}</strong>
+            </div>
+            <div class="text-[11px] text-slate-500">
+              Prereq: <strong>${c.prereqCode}</strong> | Final: <strong>${c.finalType}</strong>
+            </div>
+          </div>
+        `).join('');
+      }
+      document.getElementById('shortlist-modal').classList.remove('hidden');
+    }
+
+    function closeShortlistDrawer() {
+      document.getElementById('shortlist-modal').classList.add('hidden');
+    }
+
+    // Render 13 Official Glossary Terms (Tab 4)
+    function renderGlossary() {
+      const q = (document.getElementById('glossary-search').value || '').trim().toLowerCase();
+      const grid = document.getElementById('glossary-grid');
+
+      const filtered = GLOSSARY_DATA.filter(g =>
+        !q ||
+        g.term.toLowerCase().includes(q) ||
+        g.fullName.toLowerCase().includes(q) ||
+        g.explanation.toLowerCase().includes(q) ||
+        g.example.toLowerCase().includes(q)
+      );
+
+      grid.innerHTML = filtered.map(g => `
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-ftu-light text-ftu-red text-xs font-extrabold">${g.term}</span>
+            <span class="text-[11px] font-semibold text-slate-400 uppercase">${g.type}</span>
+          </div>
+          <div class="text-sm font-extrabold text-slate-900">${g.fullName}</div>
+          <p class="text-xs text-slate-600 leading-relaxed">${g.explanation}</p>
+          <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 text-xs">
+            <span class="font-bold text-slate-800">Example:</span> <span class="text-slate-700">${g.example}</span>
+          </div>
+          <div class="text-[11px] text-amber-800 bg-amber-50/80 px-3 py-2 rounded-lg border border-amber-200/60">
+            <strong>⚠️ Common Confusion:</strong> ${g.misunderstanding}
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
